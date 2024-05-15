@@ -40,9 +40,9 @@ void	someone_is_dead(t_data *data)
 			if ((get_time() - data->philo[i].last_meal) >= data->time_to_die
 				&& (data->philo[i].is_eating == false))
 			{
-				print_statuts("died", data->philo[i].index, data);
 				pthread_mutex_lock(&data->mutex_dead);
 				data->philo_is_dead = true;
+				printf("%ld %d died\n",get_time() - data->time_start, data->philo[i].index);
 				pthread_mutex_unlock(&data->philo[i].eating);
 				pthread_mutex_unlock(&data->mutex_dead);
 				return ;
@@ -50,7 +50,6 @@ void	someone_is_dead(t_data *data)
 			pthread_mutex_unlock(&data->philo[i].eating);
 			i++;
 		}
-		usleep(100);
 	}
 }
 
@@ -89,7 +88,6 @@ int	philo(char **args)
 		pthread_create(&data.philo[i].th, NULL, routine,
 			(void *)&data.philo[i]);
 		i++;
-		usleep(100);
 	}
 	someone_is_dead(&data);
 	exit_philo(&data, data.philo);
