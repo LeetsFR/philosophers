@@ -6,7 +6,7 @@
 /*   By: mcollas <mcollas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/14 17:25:38 by mcollas           #+#    #+#             */
-/*   Updated: 2024/05/14 17:41:46 by mcollas          ###   ########.fr       */
+/*   Updated: 2024/05/15 16:22:02 by mcollas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,26 +61,14 @@ void	exit_philo(t_data *data, t_philo *philo)
 	i = 0;
 	while (i < philo->data->nbr_philo)
 	{
-			pthread_join(philo[i].th, NULL);
-			pthread_mutex_destroy(&philo[i].eating);
-			pthread_mutex_destroy(&data->forks[i]);
+		pthread_join(philo[i].th, NULL);
+		pthread_mutex_destroy(&philo[i].eating);
+		pthread_mutex_destroy(&data->forks[i]);
 		i++;
 	}
 	pthread_mutex_destroy(&data->mutex_dead);
 	pthread_mutex_destroy(&data->print);
 	pthread_mutex_destroy(&data->m_time_they_eating);
-}
-
-bool solo_philo(t_data *data)
-{
-	if(data->nbr_philo == 1)	
-	{
-		printf("0 1 has taken a fork\n");
-		time_to(data->time_to_die);
-		printf("%ld 1 died\n",data->time_to_die);
-		return(true);
-	}
-	return(false);
 }
 
 int	philo(char **args)
@@ -90,8 +78,8 @@ int	philo(char **args)
 
 	if (init_data(&data, args) == false)
 		return (1);
-	if(solo_philo(&data)== true)
-		return(888);
+	if (solo_philo(&data) == true)
+		return (888);
 	if (init_philo(&data) == false)
 		return (2);
 	data.time_start = get_time();

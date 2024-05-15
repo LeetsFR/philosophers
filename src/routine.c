@@ -6,7 +6,7 @@
 /*   By: mcollas <mcollas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/14 17:25:40 by mcollas           #+#    #+#             */
-/*   Updated: 2024/05/14 17:28:48 by mcollas          ###   ########.fr       */
+/*   Updated: 2024/05/15 16:20:26 by mcollas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,10 +63,9 @@ void	philo_sleeping(t_data *data, t_philo *philo)
 	time_to(data->time_to_sleep);
 	print_statuts("is thinking", philo->index, data);
 	if (data->nbr_philo % 2 == 1)
-    time_to(3 * data->time_to_eat - (get_time() - philo->last_meal));
+		time_to(3 * data->time_to_eat - (get_time() - philo->last_meal));
 	else
 		usleep(100);
-
 }
 
 void	*routine(void *arg)
@@ -83,12 +82,11 @@ void	*routine(void *arg)
 		take_forks(data, philo);
 		philo_eating(data, philo);
 		drop_forks(data, philo);
-		if(i + 1 == data->time_they_eat)
+		if (i + 1 == data->time_they_eat)
 		{
-			
-	pthread_mutex_lock(&data->m_time_they_eating);
-	data->finished_eating++;
-	pthread_mutex_unlock(&data->m_time_they_eating);
+			pthread_mutex_lock(&data->m_time_they_eating);
+			data->finished_eating++;
+			pthread_mutex_unlock(&data->m_time_they_eating);
 		}
 		philo_sleeping(data, philo);
 		i++;

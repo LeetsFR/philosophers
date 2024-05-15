@@ -6,7 +6,7 @@
 /*   By: mcollas <mcollas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 13:57:38 by mcollas           #+#    #+#             */
-/*   Updated: 2024/05/14 17:27:06 by mcollas          ###   ########.fr       */
+/*   Updated: 2024/05/15 16:21:21 by mcollas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,5 +71,6 @@ bool				init_data(t_data *data, char **args);
 
 // init_philo.c
 bool				init_philo(t_data *data);
+bool				solo_philo(t_data *data);
 
 #endif
