@@ -6,11 +6,24 @@
 /*   By: mcollas <mcollas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/14 17:25:42 by mcollas           #+#    #+#             */
-/*   Updated: 2024/05/14 17:25:43 by mcollas          ###   ########.fr       */
+/*   Updated: 2024/05/17 23:09:43 by mcollas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
+
+bool	he_didnt_eat_on_time(t_data *data, t_philo *philo)
+{
+	pthread_mutex_lock(&philo->eating);
+	if ((get_time() - philo->last_meal) >= data->time_to_die
+		&& philo->is_eating == false)
+	{
+		pthread_mutex_unlock(&philo->eating);
+		return (true);
+	}
+	pthread_mutex_unlock(&philo->eating);
+	return (false);
+}
 
 void	time_to(unsigned long time_to_wait)
 {

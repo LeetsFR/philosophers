@@ -6,7 +6,7 @@
 /*   By: mcollas <mcollas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/14 17:25:40 by mcollas           #+#    #+#             */
-/*   Updated: 2024/05/15 16:20:26 by mcollas          ###   ########.fr       */
+/*   Updated: 2024/05/17 23:09:17 by mcollas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,8 +45,8 @@ void	philo_eating(t_data *data, t_philo *philo)
 
 void	drop_forks(t_data *data, t_philo *philo)
 {
-		pthread_mutex_unlock(&data->forks[philo->philo_forks[LEFT]]);
-		pthread_mutex_unlock(&data->forks[philo->philo_forks[RIGHT]]);
+	pthread_mutex_unlock(&data->forks[philo->philo_forks[LEFT]]);
+	pthread_mutex_unlock(&data->forks[philo->philo_forks[RIGHT]]);
 }
 
 void	philo_sleeping(t_data *data, t_philo *philo)
@@ -54,7 +54,7 @@ void	philo_sleeping(t_data *data, t_philo *philo)
 	print_statuts("is sleeping", philo->index, data);
 	time_to(data->time_to_sleep);
 	print_statuts("is thinking", philo->index, data);
-	if(data->nbr_philo % 2 == 1)
+	if (data->nbr_philo % 2 == 1)
 		usleep(data->time_to_eat * 1000);
 	else
 		usleep(10);
@@ -69,7 +69,7 @@ void	*routine(void *arg)
 	philo = (t_philo *)arg;
 	data = philo->data;
 	i = 0;
-	if(philo->index % 2 == 1)
+	if (philo->index % 2 == 1)
 		usleep((data->time_to_eat * 0.9) * 1000);
 	while (is_dead(data) == false && i < data->time_they_eat)
 	{

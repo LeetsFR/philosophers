@@ -6,7 +6,7 @@
 /*   By: mcollas <mcollas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 13:57:38 by mcollas           #+#    #+#             */
-/*   Updated: 2024/05/15 16:21:21 by mcollas          ###   ########.fr       */
+/*   Updated: 2024/05/17 23:10:15 by mcollas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ typedef struct s_data
 }					t_data;
 
 // utils.c
-void				swap_deadlock(t_philo *philo);
+bool				he_didnt_eat_on_time(t_data *data, t_philo *philo);
 void				time_to(unsigned long time_to_wait);
 bool				is_dead(t_data *data);
 void				print_statuts(char *str, unsigned long index, t_data *data);
