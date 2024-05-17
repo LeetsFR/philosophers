@@ -25,6 +25,20 @@ bool	he_finished_to_eat(t_data *data)
 	return (false);
 }
 
+
+bool he_didnt_eat_on_time(t_data * data,t_philo * philo)
+{
+	
+	pthread_mutex_lock(&philo->eating);
+	if ((get_time() - philo->last_meal) >= data->time_to_die && philo->is_eating == false)
+	{
+		pthread_mutex_unlock(&philo->eating);
+		return(true);
+	}
+	pthread_mutex_unlock(&philo->eating);
+	return(false);
+}
+
 void	someone_is_dead(t_data *data)
 {
 	unsigned long	i;
@@ -36,38 +50,52 @@ void	someone_is_dead(t_data *data)
 		{
 			if (he_finished_to_eat(data) == true)
 				return ;
-			pthread_mutex_lock(&data->philo[i].eating);
-			if ((get_time() - data->philo[i].last_meal) >= data->time_to_die
-				&& (data->philo[i].is_eating == false))
+			if(he_didnt_eat_on_time(data,&data->philo[i]) == true)
 			{
+				pthread_mutex_lock(&data->print);
 				pthread_mutex_lock(&data->mutex_dead);
 				data->philo_is_dead = true;
 				printf("%ld %d died\n",get_time() - data->time_start, data->philo[i].index);
-				pthread_mutex_unlock(&data->philo[i].eating);
+				pthread_mutex_unlock(&data->print);
 				pthread_mutex_unlock(&data->mutex_dead);
 				return ;
 			}
-			pthread_mutex_unlock(&data->philo[i].eating);
+			usleep(10);
 			i++;
 		}
 	}
 }
 
-void	exit_philo(t_data *data, t_philo *philo)
+void exit_philo(t_data *data)
 {
-	unsigned long	i;
+	unsigned long i;
 
-	i = 0;
-	while (i < philo->data->nbr_philo)
-	{
-		pthread_join(philo[i].th, NULL);
-		pthread_mutex_destroy(&philo[i].eating);
-		pthread_mutex_destroy(&data->forks[i]);
-		i++;
-	}
-	pthread_mutex_destroy(&data->mutex_dead);
-	pthread_mutex_destroy(&data->print);
-	pthread_mutex_destroy(&data->m_time_they_eating);
+	i= 0;
+	while(i <  data->nbr_philo)
+    {
+        pthread_join(data->philo[i].th, NULL);
+
+        pthread_mutex_lock(&data->philo[i].eating);
+        pthread_mutex_unlock(&data->philo[i].eating);
+        pthread_mutex_destroy(&data->philo[i].eating);
+
+        pthread_mutex_lock(&data->forks[i]);
+        pthread_mutex_unlock(&data->forks[i]);
+        pthread_mutex_destroy(&data->forks[i]);
+				i++;
+    }
+
+    pthread_mutex_lock(&data->mutex_dead);
+    pthread_mutex_unlock(&data->mutex_dead);
+    pthread_mutex_destroy(&data->mutex_dead);
+
+    pthread_mutex_lock(&data->print);
+    pthread_mutex_unlock(&data->print);
+    pthread_mutex_destroy(&data->print);
+
+    pthread_mutex_lock(&data->m_time_they_eating);
+    pthread_mutex_unlock(&data->m_time_they_eating);
+    pthread_mutex_destroy(&data->m_time_they_eating);
 }
 
 int	philo(char **args)
@@ -90,7 +118,7 @@ int	philo(char **args)
 		i++;
 	}
 	someone_is_dead(&data);
-	exit_philo(&data, data.philo);
+	exit_philo(&data);
 	return (0);
 }
 

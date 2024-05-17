@@ -12,16 +12,6 @@
 
 #include "philo.h"
 
-void	swap_deadlock(t_philo *philo)
-{
-	int	tmp;
-
-	tmp = philo->philo_forks[LEFT];
-	philo->philo_forks[LEFT] = philo->philo_forks[RIGHT];
-	philo->philo_forks[RIGHT] = tmp;
-	usleep(100);
-}
-
 void	time_to(unsigned long time_to_wait)
 {
 	unsigned long	time;
@@ -45,7 +35,6 @@ void	print_statuts(char *str, unsigned long index, t_data *data)
 {
 	pthread_mutex_lock(&data->print);
 	pthread_mutex_lock(&data->mutex_dead);
-	usleep(10);
 	if (data->philo_is_dead == true)
 	{
 		pthread_mutex_unlock(&data->mutex_dead);
