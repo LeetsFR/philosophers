@@ -6,7 +6,7 @@
 /*   By: mcollas <mcollas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/18 17:31:43 by mcollas           #+#    #+#             */
-/*   Updated: 2024/05/18 17:41:51 by mcollas          ###   ########.fr       */
+/*   Updated: 2024/05/18 17:56:45 by mcollas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,16 +27,6 @@ void	exit_in_case_failure(t_data *data, unsigned long index)
 			break ;
 		i++;
 	}
-	i = 0;
-	while (i < data->nbr_philo)
-	{
-		pthread_mutex_destroy(&data->philo[i].eating);
-		pthread_mutex_destroy(&data->forks[i]);
-		i++;
-	}
-	pthread_mutex_destroy(&data->mutex_dead);
-	pthread_mutex_destroy(&data->print);
-	pthread_mutex_destroy(&data->m_time_they_eating);
 }
 
 bool	launch_thread(t_data *data)

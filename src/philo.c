@@ -6,7 +6,7 @@
 /*   By: mcollas <mcollas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/14 17:25:38 by mcollas           #+#    #+#             */
-/*   Updated: 2024/05/18 17:31:13 by mcollas          ###   ########.fr       */
+/*   Updated: 2024/05/18 17:56:48 by mcollas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,19 +60,14 @@ void	exit_philo(t_data *data)
 	i = 0;
 	while (i < data->nbr_philo)
 	{
-		pthread_join(data->philo[i].th, NULL);
+		if (pthread_join(data->philo[i].th, NULL) != 0)
+		{
+			printf("philo: exit_philo: index = %ld\n", i);
+			break ;
+		}
 		i++;
 	}
-	i = 0;
-	while (i < data->nbr_philo)
-	{
-		pthread_mutex_destroy(&data->philo[i].eating);
-		pthread_mutex_destroy(&data->forks[i]);
-		i++;
-	}
-	pthread_mutex_destroy(&data->mutex_dead);
-	pthread_mutex_destroy(&data->print);
-	pthread_mutex_destroy(&data->m_time_they_eating);
+	destroy_all_mutex(data);
 }
 
 int	philo(char **args)

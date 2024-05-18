@@ -6,7 +6,7 @@
 /*   By: mcollas <mcollas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 13:57:38 by mcollas           #+#    #+#             */
-/*   Updated: 2024/05/18 17:30:42 by mcollas          ###   ########.fr       */
+/*   Updated: 2024/05/18 18:02:01 by mcollas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,7 @@ bool				solo_philo(t_data *data);
 
 // init_mutex.c
 bool				init_mutex(t_data *data);
+void				destroy_all_mutex(t_data *data);
 void				destroy_mutex_forks(t_data *data, unsigned long size);
 void				destroy_mutex_eating(t_data *data, unsigned long size);
 
