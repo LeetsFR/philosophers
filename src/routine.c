@@ -6,7 +6,7 @@
 /*   By: mcollas <mcollas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/14 17:25:40 by mcollas           #+#    #+#             */
-/*   Updated: 2024/05/17 23:09:17 by mcollas          ###   ########.fr       */
+/*   Updated: 2024/05/18 17:31:16 by mcollas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ void	philo_eating(t_data *data, t_philo *philo)
 	philo->is_eating = true;
 	philo->last_meal = get_time();
 	pthread_mutex_unlock(&philo->eating);
-	time_to(data->time_to_eat);
+	time_to(data, data->time_to_eat);
 	pthread_mutex_lock(&philo->eating);
 	philo->is_eating = false;
 	pthread_mutex_unlock(&philo->eating);
@@ -52,10 +52,10 @@ void	drop_forks(t_data *data, t_philo *philo)
 void	philo_sleeping(t_data *data, t_philo *philo)
 {
 	print_statuts("is sleeping", philo->index, data);
-	time_to(data->time_to_sleep);
+	time_to(data, data->time_to_sleep);
 	print_statuts("is thinking", philo->index, data);
 	if (data->nbr_philo % 2 == 1)
-		usleep(data->time_to_eat * 1000);
+		time_to(data, data->time_to_eat);
 	else
 		usleep(10);
 }
@@ -70,7 +70,7 @@ void	*routine(void *arg)
 	data = philo->data;
 	i = 0;
 	if (philo->index % 2 == 1)
-		usleep((data->time_to_eat * 0.9) * 1000);
+		time_to(data, data->time_to_eat * 0.9);
 	while (is_dead(data) == false && i < data->time_they_eat)
 	{
 		take_forks(data, philo);

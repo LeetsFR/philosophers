@@ -6,7 +6,7 @@
 /*   By: mcollas <mcollas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/14 17:25:42 by mcollas           #+#    #+#             */
-/*   Updated: 2024/05/17 23:09:43 by mcollas          ###   ########.fr       */
+/*   Updated: 2024/05/18 17:31:19 by mcollas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,12 +25,12 @@ bool	he_didnt_eat_on_time(t_data *data, t_philo *philo)
 	return (false);
 }
 
-void	time_to(unsigned long time_to_wait)
+void	time_to(t_data *data, unsigned long time_to_wait)
 {
 	unsigned long	time;
 
 	time = get_time();
-	while (get_time() - time < time_to_wait)
+	while (get_time() - time < time_to_wait && is_dead(data) == false)
 		usleep(100);
 }
 

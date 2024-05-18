@@ -6,7 +6,7 @@
 /*   By: mcollas <mcollas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/14 17:25:38 by mcollas           #+#    #+#             */
-/*   Updated: 2024/05/17 23:10:25 by mcollas          ###   ########.fr       */
+/*   Updated: 2024/05/18 17:31:13 by mcollas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,29 +61,23 @@ void	exit_philo(t_data *data)
 	while (i < data->nbr_philo)
 	{
 		pthread_join(data->philo[i].th, NULL);
-		pthread_mutex_lock(&data->philo[i].eating);
-		pthread_mutex_unlock(&data->philo[i].eating);
+		i++;
+	}
+	i = 0;
+	while (i < data->nbr_philo)
+	{
 		pthread_mutex_destroy(&data->philo[i].eating);
-		pthread_mutex_lock(&data->forks[i]);
-		pthread_mutex_unlock(&data->forks[i]);
 		pthread_mutex_destroy(&data->forks[i]);
 		i++;
 	}
-	pthread_mutex_lock(&data->mutex_dead);
-	pthread_mutex_unlock(&data->mutex_dead);
 	pthread_mutex_destroy(&data->mutex_dead);
-	pthread_mutex_lock(&data->print);
-	pthread_mutex_unlock(&data->print);
 	pthread_mutex_destroy(&data->print);
-	pthread_mutex_lock(&data->m_time_they_eating);
-	pthread_mutex_unlock(&data->m_time_they_eating);
 	pthread_mutex_destroy(&data->m_time_they_eating);
 }
 
 int	philo(char **args)
 {
-	unsigned long	i;
-	t_data			data;
+	t_data	data;
 
 	if (init_data(&data, args) == false)
 		return (1);
@@ -91,14 +85,10 @@ int	philo(char **args)
 		return (888);
 	if (init_philo(&data) == false)
 		return (2);
-	data.time_start = get_time();
-	i = 0;
-	while (i < data.nbr_philo)
-	{
-		pthread_create(&data.philo[i].th, NULL, routine,
-			(void *)&data.philo[i]);
-		i++;
-	}
+	if (init_mutex(&data) == false)
+		return (3);
+	if (launch_thread(&data) == false)
+		return (false);
 	someone_is_dead(&data);
 	exit_philo(&data);
 	return (0);
@@ -108,6 +98,9 @@ int	main(int argc, char **argv)
 {
 	if (argc >= 5 && argc <= 6)
 		return (philo(argv + 1));
-	printf("Error: 5 or 6 args.\n ");
+	if (argc < 5)
+		printf("philo: too few arguments\n ");
+	else
+		printf("philo: too many arguments\n");
 	return (-1);
 }

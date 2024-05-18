@@ -6,19 +6,39 @@
 /*   By: mcollas <mcollas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/14 17:25:35 by mcollas           #+#    #+#             */
-/*   Updated: 2024/05/17 23:09:23 by mcollas          ###   ########.fr       */
+/*   Updated: 2024/05/18 17:31:04 by mcollas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
+#include <pthread.h>
+
+void	*solo_routine(void *arg)
+{
+	t_data			*data;
+	unsigned long	time;
+
+	time = get_time();
+	data = (t_data *)arg;
+	printf("0 1 has taken a fork\n");
+	while (get_time() - time < data->time_to_die)
+		usleep(100);
+	printf("%ld 1 died\n", data->time_to_die);
+	return (NULL);
+}
 
 bool	solo_philo(t_data *data)
 {
+	pthread_t	th;
+
 	if (data->nbr_philo == 1)
 	{
-		printf("0 1 has taken a fork\n");
-		time_to(data->time_to_die);
-		printf("%ld 1 died\n", data->time_to_die);
+		if (pthread_create(&th, NULL, solo_routine, (void *)data) != 0)
+		{
+			printf("philo: pthread_create()\n");
+			return (true);
+		}
+		pthread_join(th, NULL);
 		return (true);
 	}
 	return (false);
@@ -31,8 +51,6 @@ bool	init_philo(t_data *data)
 	i = 0;
 	while (i < data->nbr_philo)
 	{
-		pthread_mutex_init(&data->forks[i], NULL);
-		pthread_mutex_init(&data->philo[i].eating, NULL);
 		data->philo[i].data = data;
 		data->philo[i].philo_forks[LEFT] = i;
 		data->philo[i].philo_forks[RIGHT] = (i + 1) % data->nbr_philo;
@@ -41,8 +59,5 @@ bool	init_philo(t_data *data)
 		data->philo[i].is_eating = false;
 		i++;
 	}
-	pthread_mutex_init(&data->mutex_dead, NULL);
-	pthread_mutex_init(&data->print, NULL);
-	pthread_mutex_init(&data->m_time_they_eating, NULL);
 	return (true);
 }

@@ -6,7 +6,7 @@
 /*   By: mcollas <mcollas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 13:57:38 by mcollas           #+#    #+#             */
-/*   Updated: 2024/05/17 23:10:15 by mcollas          ###   ########.fr       */
+/*   Updated: 2024/05/18 17:30:42 by mcollas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ typedef struct s_data
 
 // utils.c
 bool				he_didnt_eat_on_time(t_data *data, t_philo *philo);
-void				time_to(unsigned long time_to_wait);
+void				time_to(t_data *data, unsigned long time_to_wait);
 bool				is_dead(t_data *data);
 void				print_statuts(char *str, unsigned long index, t_data *data);
 unsigned long		get_time(void);
@@ -72,5 +72,20 @@ bool				init_data(t_data *data, char **args);
 // init_philo.c
 bool				init_philo(t_data *data);
 bool				solo_philo(t_data *data);
+
+// init_mutex.c
+bool				init_mutex(t_data *data);
+void				destroy_mutex_forks(t_data *data, unsigned long size);
+void				destroy_mutex_eating(t_data *data, unsigned long size);
+
+// init_mutex_utils.c
+bool				init_mutex_forks(t_data *data);
+bool				init_mutex_eating(t_data *data);
+bool				init_mutex_dead(t_data *data);
+bool				init_mutex_print(t_data *data);
+bool				init_mutex_time_they_eating(t_data *data);
+
+// launch_thread.c
+bool				launch_thread(t_data *data);
 
 #endif
