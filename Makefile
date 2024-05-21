@@ -1,5 +1,5 @@
 NAME = philo
-CC =  cc -Wall -Wextra -Werror -g3
+CC =  cc -Wall -Wextra -Werror -O3
 
 SRC_FILE = philo.c routine.c utils.c init_data.c init_philo.c init_mutex.c init_mutex_utils.c launch_thread.c
 SRC_DIR = src

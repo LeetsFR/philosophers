@@ -27,6 +27,7 @@ void	exit_in_case_failure(t_data *data, unsigned long index)
 			break ;
 		i++;
 	}
+	destroy_all_mutex(data);
 }
 
 bool	launch_thread(t_data *data)
